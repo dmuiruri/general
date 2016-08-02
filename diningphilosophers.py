@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """
 This file contains an implementation of a non-blocking solution to the
 dining philosophers problem -a concurrent algorithm design
