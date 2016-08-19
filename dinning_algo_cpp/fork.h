@@ -12,11 +12,12 @@ class Fork{
   mutex mtx;
   int id;
   bool inuse;
+
  public:
   Fork(int indexid=0);
-  Fork(const Fork &f);		/* copy constructor: for somereason its needed by dinning_app */
+  Fork(const Fork &f);		/* copy constructor: required by philosopher constructor*/
   bool forkinuse();
-  void takeToUse(const int i);
+  void takeToUse(const int i);		/* pass id of philosopher, for tracing purposes */
   void putDownFork(const int i);
   int getForkId();
 };

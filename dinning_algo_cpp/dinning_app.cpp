@@ -1,7 +1,6 @@
 // Application similating the dining philosopher algorithm
 #include "philosopher.h"
 #include "fork.h"
-#include <sstream>
 #include <thread>
 #include <vector>
 using namespace std;
@@ -17,10 +16,11 @@ int main(void){
   vector<Fork> ForksVector;
   threadsVector.reserve(numOfPhilosophers);	   // ensure mem is not deallocated on runtime
   PhilosophersVector.reserve(numOfPhilosophers);  // plus it gives some performance benefits
-  ForksVector.reserve(numOfPhilosophers); // The individual loops  below also considers that
-					  // incase mem is deallocated at runtime, the
-					  // sequential processing of the vectors ensures we
-					  // get the final vector.
+  ForksVector.reserve(numOfPhilosophers); // Using individual loops below(as opposed to
+					  // processging everything in one loop) also considers
+					  // that incase mem is deallocated at runtime,
+					  // the sequential processing of the vectors ensures we
+					  // get the final created vector.
 
   // create shared Fork objects
   for(int i=0; i<=numOfPhilosophers; i++){

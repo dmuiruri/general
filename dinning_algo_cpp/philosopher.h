@@ -14,10 +14,7 @@ using namespace std;
 class Philosopher{
  private:
   int id;
-  Fork leftfork, rightfork;	/* Note that this is a composition
-				   relationship and therefore the
-				   Philosopher constructor should be
-				   designed correctly */
+  Fork leftfork, rightfork;	/* Philosopher constructor will use Fork's copy constructor */
 
  public:
   Philosopher(const int philId, const Fork &lfork, const Fork &rfork);
@@ -26,6 +23,5 @@ class Philosopher{
   void pickingUpForks();
   void puttingDownForks();
   void dinning();
-/*   void startDinningThread(); */
 };
 #endif

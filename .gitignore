@@ -1,0 +1,11 @@
+# Files ignored by git
+
+# ignore text files e.g notes
+*.txt
+
+# ignore emacs and other tools backup files
+*~
+
+# ignore .o (unix/mac)  or .exe (windows)
+*.o
+*.exe
