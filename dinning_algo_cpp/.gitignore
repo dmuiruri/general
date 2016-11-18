@@ -9,3 +9,6 @@
 # ignore .o (unix/mac)  or .exe (windows)
 *.o
 *.exe
+
+# ignore git's own file
+.gitignore
