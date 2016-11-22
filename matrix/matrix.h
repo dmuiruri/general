@@ -7,6 +7,17 @@ using namespace std;
 
 template <typename T> 
 class Matrix{
+  /* The internal implementation of the matrix in this design is
+     considered as a vector of vectors, making the structure assume a
+     two dimensional logical structure. The matrix can also be
+     implemented as a linear structure i.e as one vector. In the
+     linear structure we just need to know the number of rows(R) and
+     columns(C) to step through to the relevant element address where
+     the adrress of an element is computed as follows: 
+
+     address=1 + k * (R + 1) where k = 0, 1...(q-1) and q=min(C, R)
+
+  */
  private:
   vector<vector<T> > _matrix;	/* A vector of vectors */
   unsigned rows;		/* unsigned to ensure +ve values */
@@ -17,11 +28,12 @@ class Matrix{
   Matrix(const Matrix<T>& otherMatrix);
   virtual ~Matrix();
 
+  Matrix<T>& operator=(const Matrix<T>& otherMatrix);		/* assignment */
+
   /* Matrix mathematical operations */
   Matrix<T> operator+(const Matrix<T>& otherMatrix);		/* Addition */
   Matrix<T> operator-(const Matrix<T>& otherMatrix);		/* Subtraction */
   Matrix<T> operator*(const Matrix<T>& otherMatrix);		/* Multiplication */
-  Matrix<T>& operator=(const Matrix<T>& otherMatrix);		/* assignment */
   Matrix<T>& operator+=(const Matrix<T>& otherMatrix);		/* Addition and assignment */
   Matrix<T>& operator-=(const Matrix<T>& otherMatrix);		/* Substraction and assignment */
   Matrix<T>& operator*=(const Matrix<T>& otherMatrix);		/* Multiplicationa and assignment */ 
