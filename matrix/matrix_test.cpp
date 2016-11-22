@@ -23,6 +23,10 @@ int main(int argc, char **argv){
   result = matrix1 * matrix2;
   result.print_matrix();
 
+  // Combined Addition and assignment operator (+=)
+  result += (matrix1);
+  result.print_matrix();
+
   // TODO: Implement other tests
   
 return 0;
