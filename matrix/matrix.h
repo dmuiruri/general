@@ -56,6 +56,9 @@ class Matrix{
   /* Access row and column sizes */
   unsigned get_rows()const;
   unsigned get_cols()const;
+  
+  /* Display the matrix */
+  void print_matrix()const;
 };
 #include "matrix.cpp"		/* since its a template class, we must include */
 

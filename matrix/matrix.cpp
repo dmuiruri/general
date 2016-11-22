@@ -1,6 +1,6 @@
 #ifndef _MATRIX_CPP
 #define _MATRIX_CPP
-
+#include <iostream>
 #include "matrix.h"
 
 // Implementation of the matix template class
@@ -229,4 +229,15 @@ unsigned Matrix<T>::get_cols() const{
   return this->cols;
 }
 
+template<typename T>
+void Matrix<T>::print_matrix()const{
+  cout << endl;
+  for(int i=0; i < rows; i++){
+    for(int j=0; j < cols; j++){
+      cout << _matrix[i][j] << " " ;
+    }
+    cout << endl;
+  }
+}
+  
 #endif
