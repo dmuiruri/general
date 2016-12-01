@@ -124,13 +124,13 @@ Matrix<T>& Matrix<T>::operator*=(const Matrix<T>& otherMatrix){
 
 template<typename T>
 Matrix<T> Matrix<T>::transpose(){
-  int rows = _matrix.get_rows();
-  int cols = _matrix.get_cols();
+  int rows = get_rows();
+  int cols = get_cols();
   Matrix<T> temp(cols, rows, 0.0);
 
   for(int i=0; i<rows; i++){
     for(int j=0; j<cols; j++){
-      temp[j][i] =this-> _matrix[i][j];
+      temp(j,i) =this-> _matrix[i][j];
     }
   }
   return temp;
@@ -143,7 +143,7 @@ Matrix<T> Matrix<T>::operator+(const T& scalar){
   
   for(int i=0; i<rows; i++){
     for(int j=0; j<cols; j++){
-      result[i][j] = scalar + this->_matrix(i, j);
+      result(i,j) = this->_matrix[i][j] + scalar;
     }
   }
   return result;
@@ -155,7 +155,7 @@ Matrix<T> Matrix<T>::operator-(const T& scalar){
 
   for(int i=0; i<rows; i++){
     for(int j=0; j<cols; j++){
-      result[i][j] = this->_matrix[i][j] + scalar;
+      result(i,j) = this->_matrix[i][j] - scalar;
     }
   }
   return result;
@@ -166,7 +166,7 @@ Matrix<T> Matrix<T>::operator*(const T& scalar){
   Matrix<T> result(rows, cols, 0.0);
   for(int i=0; i<rows; i++){
     for(int j=0; j<cols; j++){
-      result[i][j] = this->_matrix[i][j] + scalar;
+      result(i,j) = this->_matrix[i][j] * scalar;
     }
   }
   return result;
@@ -177,7 +177,7 @@ Matrix<T> Matrix<T>::operator/(const T& scalar){
   Matrix<T> result(rows, cols, 0.0);
   for(int i=0; i<rows; i++){
     for(int j=0; j<cols; j++){
-      result[i][j] = this->_matrix[i][j] / scalar;
+      result(i,j) = this->_matrix[i][j] / scalar;
     }
   }
   return result;
