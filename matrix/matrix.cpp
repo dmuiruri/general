@@ -2,6 +2,7 @@
 #define _MATRIX_CPP
 #include <iostream>
 #include "matrix.h"
+#include <algorithm>
 
 // Implementation of the matix template class
 template<typename T>
@@ -186,7 +187,11 @@ Matrix<T> Matrix<T>::operator/(const T& scalar){
 // Matrix and vector operations
 template<typename T>
 vector<T> Matrix<T>::operator*(const vector<T>& aVector){
-  vector<T> resVector(aVector.size(), 0.0);
+  vector<T> resVector(rows, 0.0);
+  if(aVector.size() != cols){
+    cout << "***!!The size of matrix cols is not equal to the vector rows"<< endl;
+    return resVector;	// Return an empty matrix
+  }
   for(int i=0; i<rows; i++){
     for(int j=0; j<cols; j++){
       resVector[i] += this->_matrix[i][j] * aVector[j];
@@ -199,9 +204,10 @@ template<typename T>
 vector<T> Matrix<T>::diag_vec(){
   /* No need to iterate through all elements just move row to row
      picking only they diagonal element this speeds up the computation
-     especially in light of large matrices. */
-  vector<T> resVector(rows, 0.0);
-  for(int i=0; i<rows; i++){
+     especially with regard to large matrices. */
+  int counter = min(rows, cols);
+  vector<T> resVector(counter, 0.0);
+  for(int i=0; i<counter; i++){
 	resVector[i] = _matrix[i][i];	
   }
   return resVector;
