@@ -13,14 +13,13 @@ particularly integer overflow.
 How can variance be computed in a stable form?
 """
 
-def singlepass_var(x):
+def twopass_var(x):
     """
     Calculate the variance using a single pass
     """
     x = np.array(x)
     x_mean = np.mean(x)
     return (1/len(x)-1) * sum([(i-x_mean)**2 for i in x])
-
 
 if __name__ == '__main__':
     mu = 10e9
