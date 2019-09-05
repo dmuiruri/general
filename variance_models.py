@@ -26,7 +26,10 @@ def twopass_var(x):
 
 def onepass_var(x):
     """
-    Calculate the variance using a single pass approach
+    Calculate the variance using a single pass approach.
+
+    This approach is considered unstable as computing the difference
+    of two potentially large positive numbers tends to be numerically instable.
     """
     x = np.array(x)
     return 1/(len(x)-1) * (sum(x**2) - (1/len(x) * sum(x)**2))
