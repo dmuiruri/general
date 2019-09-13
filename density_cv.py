@@ -41,6 +41,7 @@ def kernel_density(t, x, h):
     """
     Calculate the kernel density
 
+    t: plot points
     x: input array containing obs to be estimated
     h: width of the kernel
     """
