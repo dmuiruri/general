@@ -17,15 +17,21 @@ import matplotlib.pyplot as plt
 
 data = pd.read_csv('http://www.cs.helsinki.fi/u/ahonkela/teaching/compstats1/fram.txt', sep='\t')
 Nperms = 1000 # No of permutations
-male = data['DBP'][data['SEX'] == 'male']
-female = data['DBP'][data['SEX'] == 'female']
 
-def pvalue(s1, s2):
+def pvalue(var='AGE'):
     """
     Calculate the p-value based on simulated means
+
+    var: variable on which to test difference of means
+    s1: series
+    s2: series
     """
+    s1 = data[var][data['SEX'] == 'male']
+    s2 = data[var][data['SEX'] == 'female']
+
     truediff = np.abs(np.mean(s1) - np.mean(s2))
     meandiffs = np.zeros(Nperms)
+    print("=== Evaluating difference statistical significance of means on: ", var)
     print("True mean difference {}".format(truediff))
     print("Means: ", np.mean(s1), np.mean(s2))
     
@@ -36,4 +42,8 @@ def pvalue(s1, s2):
     return (np.sum(truediff <= meandiffs) + 1)/(len(meandiffs) + 1)
 
 if __name__ == '__main__':
-    print("P-Value: ", pvalue(male, female))
+    print("P-Value: ", pvalue())
+    print("P-Value: ", pvalue(var='CHOL'))
+    print("P-Value: ", pvalue(var='SBP'))
+    print("P-Value: ", pvalue(var='FRW'))
+    print("P-Value: ", pvalue(var='DBP'))
