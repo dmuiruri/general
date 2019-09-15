@@ -12,9 +12,12 @@ Kernels: Gaussian Kernel, Uniform Kernel, Epanechnikov Kernel
 Kernel Density Estimate: A formular that make use of a given kernel to
 estimate the kernel density of a given point
 
-Observations: When "h" is too large in the case of a guassian kernel,
-the plot is very thick, on the contrast, when "h" is too small, the
-density line becomes too jagged.
+Observations: The results are sensitive to the kernel bandwidth; When
+"h" is too large in the case of a guassian kernel, the plot is very
+thick, on the contrast, when "h" is too small, the density line
+becomes too jagged.
+
+Cross Validation can be used to tune the kernel bandwidth.
 """
 
 import numpy as np
@@ -48,11 +51,11 @@ def kernel_density(t, x, h):
 
     t: plot points
     x: input array containing obs to be estimated
-    h: width of the kernel
+    h: Kernel bandwidth
     """
     y = np.zeros(len(t))
     for i in range(len(t)):
-        y[i] = np.mean(K_gauss((t[i] - x)/h))/h
+        y[i] = np.mean(K_gauss((t[i] - x) / h)) / h
     return y
 
 def true_density_comparison():
@@ -70,8 +73,46 @@ def true_density_comparison():
     plt.legend()
     plt.show()
 
+def cv_density_bandwidth(x):
+    """
+    Select "h", the kernel bandwidth.
+
+    Using LOOCV (Leave One Out Cross Validation) technique to model
+    the most suitable bandwidth parameter.
+
+    Run the kernel_density multiple times (across all given "h") and
+    taking log of the obtain density for every round of
+    simulation.
+
+    Step I (outer loop): Each round of simulation, one item is dropped
+    from the passed array (x) which is the item left out (LOO). So for
+    each stage, the simulation contains one element less of x.
+
+    Step II (Inner loop): Note how logls are accumulated: All logls[0]
+    contain the results of all cycles in step I where the simulation
+    uses h[0] as the simulating kernel width.
+
+    Once these are accumulated, the maximum of the stored values
+    indicates which value of "h" among those given would maximize the
+    objective function given. Therefore the optimal value of h is
+    stored in a corresponding location as the maximum value
+    location. (argmax) returns the indices of the maximum values along
+    an axis.
+    """
+    h = np.linspace(0.1, 1.0, 10)
+    logls = np.zeros(len(h))
+    print("LOO-CV :")
+    for i in range(len(x)):
+        for j in range(len(h)):
+            logls[j] += np.sum(np.log(kernel_density(x[i], np.delete(x, i), h[j])))
+    return (h, h[np.argmax(logls)])
+
+    
 if __name__ == '__main__':
-    true_density_comparison()
+#     # Test 1
+#     true_density_comparison()
+
+#     # Test two
 #     t = np.linspace(-2, 10, 100)
 #     nb = plt.hist(d, 30, normed=True)
 
@@ -82,3 +123,5 @@ if __name__ == '__main__':
 #     plt.legend()
 #     plt.show()
     
+    # Test 3
+    print(cv_density_bandwidth(d))
