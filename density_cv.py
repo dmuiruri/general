@@ -30,12 +30,25 @@ d = pd.read_csv('http://www.cs.helsinki.fi/u/ahonkela/teaching/compstats1/toydat
 def K_gauss(x):
     """
     Generate the Gaussian Kernel for x
+
+    This is for the univariate case, see multivariate version.
     """
     return (np.exp((-x**2)/2))/(np.sqrt(2*np.pi))
 
+def K_ndgauss(s):
+    """
+    Get multivariate Gaussian Kernel
+    
+    x: An n dimensional array or dataframe
+    """
+    d = x.shape[1]
+    return np.exp(-np.sum(x**2, 1)/2) / (np.sqrt(2*np.pi)**d)
+
 def K_uniform(x):
     """ 
-    Compute the uniform Kernel 
+    Compute the uniform Kernel
+
+    This is the univariate case
     """
     return 0.5 * (np.abs(x) < 1) 
 
