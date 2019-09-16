@@ -35,11 +35,11 @@ def K_gauss(x):
     """
     return (np.exp((-x**2)/2))/(np.sqrt(2*np.pi))
 
-def K_ndgauss(s):
+def K_ndgauss(x):
     """
     Get multivariate Gaussian Kernel
     
-    x: An n dimensional array or dataframe
+    x: An d dimensional array or dataframe with n observations
     """
     d = x.shape[1]
     return np.exp(-np.sum(x**2, 1)/2) / (np.sqrt(2*np.pi)**d)
@@ -51,6 +51,15 @@ def K_uniform(x):
     This is the univariate case
     """
     return 0.5 * (np.abs(x) < 1) 
+
+def K_nduniform(x):
+    """
+    Generate the Multivariate Uniform Kernel
+
+    x: An d dimensional array or dataframe with n observations
+    """
+    d = x.shape[1]
+    return (0.5)**d * np.all((np.abs(x) < 1), 1)
 
 def K_epanechnikov(x):
     """
