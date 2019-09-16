@@ -129,6 +129,39 @@ def cv_density_bandwidth(x):
             logls[j] += np.sum(np.log(kernel_density(x[i], np.delete(x, i), h[j])))
     return (h, h[np.argmax(logls)])
 
+def kfold_cv_density(kfold):
+    """
+    Validation using k-fold version of cross validation
+
+    i: block index
+    k: number of blocks
+    N: number of observations
+    """
+    d = np.random.randn(1000, 1)
+    fig, ax = plt.subplots(1, 3)
+    t = np.linspace(np.min(d), np.max(d), 100)
+    p = 0
+    for k in kfold:
+        # Loop through all the blocks
+        # Divide the data into k segments
+        N = len(d)
+        I = np.random.permutation(N)
+
+        hs = np.linspace(0.1, 1.0, 100)
+        logls = np.zeros(len(hs))
+        for j in range(k):
+            testI = np.zeros(N, np.bool)
+            testI[((j*N)//k):(((j+1)*N)//k)] = True
+            trainI = ~testI
+            for i in range(len(hs)):
+                logls[i] += np.sum(np.log(kernel_density(d[I[testI]], d[I[trainI]], hs[i])))
+        print("Optimal kernel width (h): ", hs[np.argmax(logls)])
+        ax[p].hist(d, 40, density=True, alpha=0.45)
+        y = kernel_density(t, d, hs[np.argmax(logls)])
+        ax[p].plot(t, y, label='h=%f'%hs[np.argmax(logls)])
+        ax[p].plot(t, K_gauss(t), label='true pdf')
+        p += 1
+    plt.legend()
     
 if __name__ == '__main__':
 #     # Test 1
@@ -147,3 +180,7 @@ if __name__ == '__main__':
     
     # Test 3
     print(cv_density_bandwidth(d))
+
+    # Test 4
+    # K-Fold Cross Validation
+    kfold_cv_density([2, 10, 100])
