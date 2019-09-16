@@ -2,7 +2,8 @@
 
 """
 This module implements resampling strategies mainly PERMUTATIONS and
-BOOTSTRAPPING
+BOOTSTRAPPING. For a quick check the value of the bootstrapped
+parameter should be in the obtained confidence interval.
 """
 import numpy as np
 from pandas import DataFrame
@@ -17,8 +18,6 @@ sims = 1000
 def mean_ci(no_of_sims=sims):
     """
     Compute the theoretical mean and the Bootstrap mean
-
-    Use Bootsrtap to compute the mean confidence interval
     """
     means = np.zeros(no_of_sims)
     medians = np.zeros(no_of_sims)
@@ -42,3 +41,26 @@ def mean_ci(no_of_sims=sims):
     print("confidence interval: ", ci_med_l, "-", ci_med_u)
 
 
+def bootstrap_correlation(d, sims=1000):
+    """
+    Calculate the bootstrap Confidence Interval between Variables
+    x, y: variables to compute correlation
+    sims: No. of simulations
+    
+    For correlations, the bootstrap needs to be aware of the indices
+    as they change during the resampling process otherwise the "index symmetry" is lost
+    """
+    c = d.shape[0]
+    bcorrs = np.zeros(sims)
+    for i in range(sims):
+        smp = d.sample(d.shape[0], replace=True)
+        bcorrs[i] = np.corrcoef(smp['X'], smp['Y'])[0, 1]
+    bcorr = np.mean(bcorrs)
+    bstd = np.std(bcorrs)
+    print("=====3).======")
+    print("Estimated correlation: ", bcorr, "Theoretical correlation", np.corrcoef(x, y)[0][1])
+    print("Estimated CI ", np.percentile(bcorrs, [2.5, 97.5]))
+    
+if __name__ == '__main__':
+    mean_ci()
+    bootstrap_correlation(data[['X', 'Y']])
