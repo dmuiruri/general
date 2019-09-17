@@ -39,7 +39,7 @@ def K_ndgauss(x):
     """
     Get multivariate Gaussian Kernel
     
-    x: An d dimensional array or dataframe with n observations
+    x: An general d-dimensional array or dataframe with n observations
     """
     d = x.shape[1]
     return np.exp(-np.sum(x**2, 1)/2) / (np.sqrt(2*np.pi)**d)
