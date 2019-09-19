@@ -51,5 +51,5 @@ if __name__ == '__main__':
     # plotting the trace plot
     thetas = thetas[len(thetas)//2:] # first half of the samples are discarded
     ax[1].plot(thetas[::10]) # plot the thinned(every 10th sample) samples
-    ax[2].hist(thetas[::10]), 50, normed=True)
+    ax[2].hist(thetas[::10], 50, normed=True)
     plt.show()
