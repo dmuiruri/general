@@ -40,7 +40,7 @@ def mcmc_mh_sampler(theta0, n, logtarget, drawproposal):
 if __name__ == '__main__':
     np.random.seed(42)
     thetas = mcmc_mh_sampler(0.0, 1000,
-                             lambda theta: np.rando,normal(theta),
+                             lambda theta: np.random.normal(theta),
                              lambda theta: np.random.uniform(theta-0.5, theta+0.5))
     fig, ax = plt.subplots(1, 3)
     # plottig the true density
