@@ -23,6 +23,9 @@ def linear_reg_logl(coefs, x, y):
     The log pdf of normal where x is the result of the func which is
     the error term (€) here. So we get the log-likelihood of the x in
     the normal distribution.
+
+    Note: For some reason usint scipy.stats.norm.logpdf(x) does not
+    work with autograd.
     """
     return np.sum(-0.5*np.log(2*np.pi)-0.5*(y - coefs[1] - coefs[0]*x)**2)
 
