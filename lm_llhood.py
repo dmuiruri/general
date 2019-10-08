@@ -20,9 +20,9 @@ def linear_reg_logl(coefs, x, y):
     follows a normal distribution see the normal dist pdf with mu=0
     std=1 in log
     
-    The logpdf of normal where x is the result of the func which is
-    the error term (€) here. So we get the log-likelihood of the x in
-    the normal distribution.
+    The logpdf of normal distribution where x is the result of the
+    func which being optimized in this case the error term (€). So we
+    get the log-likelihood of the x in the normal distribution.
 
     Note: For some reason usint scipy.stats.norm.logpdf(x) does not
     work with autograd.
@@ -30,7 +30,7 @@ def linear_reg_logl(coefs, x, y):
     return np.sum(-0.5*np.log(2*np.pi)-0.5*(y - coefs[1] - coefs[0]*x)**2)
 
 
-def linear_reg(x, y):
+def linear_regression(x, y):
     """
     Estimate the linear regression coefficients using maximum
     likelihood estimation
@@ -39,8 +39,15 @@ def linear_reg(x, y):
     errors (€), the gradient of the function, which is setup by using
     autograd which performs gradient computations.
     """
-    func = lambda c: -linear_reg_logl(c, np.array(x), np,array(y))
+    func = lambda c: -linear_reg_logl(c, np.array(x), np.array(y))
     d_func = autograd.grad(func) # gradient func
     v = minimize(func, np.ones(2), jac=d_func, method='L-BFGS-B')
     return v
 
+
+if __name__ == '__main__':
+    x = np.arange(10)
+    y = np.copy(x); y[8]=0
+
+    v_norm = linear_regression(x, y)
+    print(v_norm)
