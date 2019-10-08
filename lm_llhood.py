@@ -17,7 +17,7 @@ The log-likelihood of a variable in a given distn => log pdf version of the give
 
 
 """
-
+import matplotlib.pyplot as plt
 import autograd.numpy as np
 import autograd
 from scipy.optimize import minimize
@@ -61,6 +61,10 @@ def linear_reg_laplacelogpdf(coefs, x, y):
     return np.sum(-np.log(2)-np.abs(y - coefs[1] - coefs[0]*x))
 
 def laplace_regression(x, y):
+    """
+    Optimize the error function to obtain maximum likelihood of the
+    parameters (const and Beta_1)
+    """
     func = lambda c: -linear_reg_laplacelogpdf(c, np.array(x), np.array(y))
     d_func = autograd.grad(func)
     v = minimize(func, np.ones(2), jac=d_func, method='L-BFGS-B')
@@ -68,6 +72,9 @@ def laplace_regression(x, y):
 
 
 if __name__ == '__main__':
+    # Compare a regular linear regression which assumes the errors
+    # follow a Normal distrubution to a robust regression where the
+    # errors are modelled as to follow laplace distribution.
     x = np.arange(10)
     y = np.copy(x); y[8]=0
 
@@ -75,3 +82,11 @@ if __name__ == '__main__':
     print("Normal lr:", v_norm)
     v_lap = laplace_regression(x, y)
     print("Laplace lr:", v_lap)
+
+    # Plot
+    t = np.array([0, 10])
+    plt.plot(x, y, '*')
+    plt.plot(t, v_norm.x[0]*t + v_norm.x[1], label='norm_lr')
+    plt.plot(t, v_lap.x[0]*t + v_lap.x[1], label='lap_lr')
+    plt.legend()
+    plt.show()
