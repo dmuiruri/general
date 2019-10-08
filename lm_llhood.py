@@ -9,7 +9,8 @@ The log-likelihood of a variable in a given distn => log pdf version of the give
 
 
 """
-import numpy as np
+
+import autograd.numpy as np
 import autograd
 from scipy.optimize import minimize
 from scipy.stats import norm
