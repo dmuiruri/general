@@ -83,7 +83,9 @@ if __name__ == '__main__':
     v_lap = laplace_regression(x, y)
     print("Laplace lr:", v_lap)
 
-    # Plot
+    # Plot: Base on the plots, it is evident the laplace estimates the
+    # model better while the normal distribution is more susceptible
+    # to outliers or changes in the structure of the data.
     t = np.array([0, 10])
     plt.plot(x, y, '*')
     plt.plot(t, v_norm.x[0]*t + v_norm.x[1], label='norm_lr')
