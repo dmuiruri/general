@@ -98,8 +98,9 @@ def m_mv_logpdf(x, π, µ):
     The logsumexp is used to generate the log of the sum of exponents
     generated from the function, "1" sums the values across the rows
 
-    π is a function that performs a transformation and returns a 2d vector
-    µ are 2D vector of means
+    π is a function that performs a transformation and returns a 2d
+    vector µ are 2D vector of means
+
     """
     return scs.logsumexp(np.log(π) + ss.norm.logpdf(x, µ, 1), 1)
 
