@@ -70,9 +70,25 @@ def laplace_regression(x, y):
     v = minimize(func, np.ones(2), jac=d_func, method='L-BFGS-B')
     return v
 
+def w(x):
+    """
+    Generate weights to used in creating a normal mixture model. The
+    generated weights follow the constraint that 0 ≤ π ≤ 1 and that
+    the weights sum to 1 i.e π1 + ... + πk = 1. To achieve this
+    contraints, transformations must be used.
+
+    x is a scalar
+    returns a vector of the weights [π1, π2] for a bivariate case
+    """
+    return np.array([1/(1 + np.exp(-x)), np.exp(-π)/(1 + np.exp(-x))])
+
 def m_mv_logpdf(x, π, µ):
     """
-    Generate a multivariate norm
+    Generate a multivariate normal pdf.
+
+    The logsumexp is used to generate the log of the sum of exponents
+    generated from the function, "1" sums the values across the rows
+
     π is a function that performs a transformation and returns a 2d vector
     µ are 2D vector of means
     """
@@ -99,3 +115,6 @@ if __name__ == '__main__':
     plt.plot(t, v_lap.x[0]*t + v_lap.x[1], label='lap_lr')
     plt.legend()
     plt.show()
+
+
+    # Maximum likelihood estimation of a normal mixture model
