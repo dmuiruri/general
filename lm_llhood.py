@@ -17,11 +17,16 @@ The log-likelihood of a variable in a given distn => log pdf version of the give
 
 
 """
+import pandas as pd
 import matplotlib.pyplot as plt
 import autograd.numpy as np
+import autograd.scipy.special as scs
 import autograd
+import autograd. scipy.stats as ss
 from scipy.optimize import minimize
-from scipy.stats import norm
+from autograd.scipy.stats import norm
+
+d = pd.read_csv('~/Documents/unihelsinki/comptatsI/data.csv', index_col=0).values 
 
 def linear_reg_normlogpdf(coefs, x, y):
     """
@@ -70,6 +75,10 @@ def laplace_regression(x, y):
     v = minimize(func, np.ones(2), jac=d_func, method='L-BFGS-B')
     return v
 
+def p1(x):
+    """Transformation back to π"""
+    return 1/(1 + np.exp(-x))
+
 def w(x):
     """
     Generate weights to used in creating a normal mixture model. The
@@ -80,7 +89,7 @@ def w(x):
     x is a scalar
     returns a vector of the weights [π1, π2] for a bivariate case
     """
-    return np.array([1/(1 + np.exp(-x)), np.exp(-π)/(1 + np.exp(-x))])
+    return np.array([1/(1 + np.exp(-x)), np.exp(-x)/(1 + np.exp(-x))])
 
 def m_mv_logpdf(x, π, µ):
     """
@@ -97,7 +106,7 @@ def m_mv_logpdf(x, π, µ):
 def norm_mixture():
     """
     Generate parameter estimates using autograd and optimization
-    (maximization)
+    (maximization) using a given dataset d.
 
     v is vector of optimized parameters with len similar to input vector
 
@@ -137,11 +146,13 @@ if __name__ == '__main__':
 #     plt.show()
 
 
-    # Maximum likelihood estimation of a normal mixture model
+    # Maximum likelihood estimation of a normal mixture model and
+    # ploting using the estimated parameters.
     v_norm_mix = norm_mixture()
     print(v_norm_mix)
-    print("x, mu1, mu2:", p1(v_norm_mix.x[0]), v_norm_mix.x[1], v_norm_mix.x[2])
+    print("π_1, µ1, µ2:", p1(v_norm_mix.x[0]), v_norm_mix.x[1], v_norm_mix.x[2])
     t = np.linspace(0, 10, 100)
-    ymv = m_mv_logpdf(t.reshape(len(t),1), w(v_norm_mix.x[0]), v_norm_mix.x[1:])
-    plt.plot(x, np.exp(ymv))
+    ymv = m_mv_logpdf(t.reshape(len(t),1), w(v_norm_mix.x[0]), v_norm_mix.x[1:]) # using
+    plt.plot(t, np.exp(ymv))
     nb = plt.hist(d, 50, density=True)
+    plt.show()
