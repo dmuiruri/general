@@ -118,23 +118,30 @@ if __name__ == '__main__':
     # Compare a regular linear regression which assumes the errors
     # follow a Normal distrubution to a robust regression where the
     # errors are modelled as to follow laplace distribution.
-    x = np.arange(10)
-    y = np.copy(x); y[8]=0
+#     x = np.arange(10)
+#     y = np.copy(x); y[8]=0
 
-    v_norm = linear_regression(x, y)
-    print("Normal lr:", v_norm)
-    v_lap = laplace_regression(x, y)
-    print("Laplace lr:", v_lap)
+#     v_norm = linear_regression(x, y)
+#     print("Normal lr:", v_norm)
+#     v_lap = laplace_regression(x, y)
+#     print("Laplace lr:", v_lap)
 
     # Plot: Base on the plots, it is evident the laplace estimates the
     # model better while the normal distribution is more susceptible
     # to outliers or changes in the structure of the data.
-    t = np.array([0, 10])
-    plt.plot(x, y, '*')
-    plt.plot(t, v_norm.x[0]*t + v_norm.x[1], label='norm_lr')
-    plt.plot(t, v_lap.x[0]*t + v_lap.x[1], label='lap_lr')
-    plt.legend()
-    plt.show()
+#     t = np.array([0, 10])
+#     plt.plot(x, y, '*')
+#     plt.plot(t, v_norm.x[0]*t + v_norm.x[1], label='norm_lr')
+#     plt.plot(t, v_lap.x[0]*t + v_lap.x[1], label='lap_lr')
+#     plt.legend()
+#     plt.show()
 
 
     # Maximum likelihood estimation of a normal mixture model
+    v_norm_mix = norm_mixture()
+    print(v_norm_mix)
+    print("x, mu1, mu2:", p1(v_norm_mix.x[0]), v_norm_mix.x[1], v_norm_mix.x[2])
+    t = np.linspace(0, 10, 100)
+    ymv = m_mv_logpdf(t.reshape(len(t),1), w(v_norm_mix.x[0]), v_norm_mix.x[1:])
+    plt.plot(x, np.exp(ymv))
+    nb = plt.hist(d, 50, density=True)
