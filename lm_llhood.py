@@ -94,6 +94,26 @@ def m_mv_logpdf(x, π, µ):
     """
     return scs.logsumexp(np.log(π) + ss.norm.logpdf(x, µ, 1), 1)
 
+def norm_mixture():
+    """
+    Generate parameter estimates using autograd and optimization
+    (maximization)
+
+    v is vector of optimized parameters with len similar to input vector
+
+    The minimize function take the function and the input arguments in
+    one vector, these elements can be distributed to the function by
+    indexing the array as shown in the lambda function.
+
+    In the lambda function, not the second argument is a function that
+    returns a 2d vector, this allows the optimizer to reach and be
+    able to optimize this function.
+    """
+    f = lambda a: -np.sum(m_mv_logpdf(d, w(a[0]), a[1:]))
+    gf = autograd.grad(f) # gradient function
+    v = minimize(f, [0.5, 1, 10.0], jac=gf, method='L-BFGS-B')
+    return v
+
 if __name__ == '__main__':
     # Compare a regular linear regression which assumes the errors
     # follow a Normal distrubution to a robust regression where the
