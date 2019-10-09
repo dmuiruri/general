@@ -70,6 +70,13 @@ def laplace_regression(x, y):
     v = minimize(func, np.ones(2), jac=d_func, method='L-BFGS-B')
     return v
 
+def m_mv_logpdf(x, π, µ):
+    """
+    Generate a multivariate norm
+    π is a function that performs a transformation and returns a 2d vector
+    µ are 2D vector of means
+    """
+    return scs.logsumexp(np.log(π) + ss.norm.logpdf(x, µ, 1), 1)
 
 if __name__ == '__main__':
     # Compare a regular linear regression which assumes the errors
